@@ -24,3 +24,16 @@ Para ver as configurações disponíveis, digite:
 `python manage.py show_settings`
 
 Se um novo app for criado, é preciso adicionar o módulo ao settings.py no módulo INSTALLED_APPS
+
+Caso seja criado uma pasta de templates (ex: base) com arquivos globais (ex: partials e layouts que serão usados em várias páginas ou projetos diferentes), é preciso adicionar o módulo ao settings.py no módulo TEMPLATES, na chave DIRS. O módulo STATICFILES_DIRS é usado para arquivos estáticos (css, js, imagens).
+
+## Django HTML
+
+O comando abaixo herda o template base.html para o template atual.
+`{% extends "base.html" %}`
+
+O comando abaixo imprime o conteúdo dentro do bloco `texto`
+`{% block texto %} {% endblock texto %}`
+
+Caso algum dado seja passado da view (python) para o HTML, é preciso passar o contexto para a view como parâmetro chave-valor:
+`return render(request, 'estudos_django/index.html', {'nome': 'João'})`. No HTML, é preciso inserir o comando `{{ nome }}` para imprimir o conteúdo da variável nome.
