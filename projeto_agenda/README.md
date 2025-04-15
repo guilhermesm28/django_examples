@@ -15,6 +15,9 @@ uv add django
 django-admin startproject project .
 python manage.py startapp contact
 python manage.py runserver
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
 ```
 
 Após criar o app, é necessário referenciar o app no arquivo settings.py, no argumento INSTALLED_APPS.
@@ -122,3 +125,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('contact.urls')),
 ]
+
