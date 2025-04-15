@@ -83,6 +83,21 @@ STATICFILES_DIRS = [
 ]
 ```
 
+O argumento STATIC_ROOT serve para armazenar os arquivos estáticos gerados pelo Django no servidor (no momento do deploy). Após configurar no settings.py, é preciso executar o comando `python manage.py collectstatic`.
+
+```python
+STATIC_ROOT = BASE_DIR / 'static'
+```
+
+Caso o projeto tenha a necessidade de receber arquivos de upload, é preciso referenciar os argumentos MEDIA_URL e MEDIA_ROOT no settings.py.
+
+```python
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+```
+
+Esses diretórios de media e static vão ser criados na raiz do projeto e devem ser ignorados no .gitignore.
+
 Criar a pasta de templates para o app.
 
 ```
@@ -125,4 +140,35 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('contact.urls')),
 ]
+```
 
+No arquivo settings.py é possível alterar o timezone e idioma. Para isso, basta ajustar os argumentos TIME_ZONE e LANGUAGE_CODE.
+
+```python
+TIME_ZONE = 'America/Sao_Paulo'
+LANGUAGE_CODE = 'pt-br'
+```
+
+## Models
+
+Sempre que um model for criado ou modificado, é preciso executar os comandos abaixo.
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+É interessante também registrar os models no admin.py do app para que eles sejam visíveis no admin e possibilitem a interação com o banco de dados (CRUD) por meio da interface do Django.
+
+```python
+from django.contrib import admin
+from contact.models import Contact
+
+admin.site.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('id', 'first_name', 'last_name', 'phone', 'email', 'created_date')
+    search_fields = ('id', 'first_name', 'last_name', 'phone', 'email')
+    list_filter = ('created_date',)
+    list_per_page = 10
+    list_max_show_all = 100
+```
