@@ -149,6 +149,21 @@ TIME_ZONE = 'America/Sao_Paulo'
 LANGUAGE_CODE = 'pt-br'
 ```
 
+Caso o projeto tenha mais de um ambiente (desenvolvimento e produção), é possível criar um arquivo settings_local.py e referenciar ele no settings.py. Porém, esse arquivo de configuração **deve ser ignorado no .gitignore.**
+
+```python
+# settings.py
+try:
+    from project.settings_local import *
+except ImportError:
+    pass
+
+# settings_local.py
+SECRET_KEY = 'CHANGE-ME'
+DEBUG = True
+# outras configurações de desenvolvimento aqui
+```
+
 ## Models
 
 Sempre que um model for criado ou modificado, é preciso executar os comandos abaixo.
