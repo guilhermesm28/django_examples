@@ -187,3 +187,7 @@ class ContactAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_max_show_all = 100
 ```
+
+## Utils
+
+Se existir na aplicação algum formulário do tipo Post, é necessário incluir o comando `{% csrf_token %}` no template para evitar o erro de csrf.
