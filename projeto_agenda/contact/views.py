@@ -2,8 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from contact.models import Contact
 from django.db.models import Q
 from django.core.paginator import Paginator
-from contact.forms import ContactForm
+from contact.forms import ContactForm, RegisterForm
 from django.urls import reverse
+from django.contrib import messages
 
 def index(request):
     contacts = Contact.objects.filter(show=True).order_by('-id')
@@ -151,3 +152,22 @@ def delete(request, contact_id):
              'confirmation': confirmation,
          }
      )
+
+def register(request):
+    form = RegisterForm()
+
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuário criado com sucesso!')
+            return redirect('contact:index')
+
+    return render(
+        request,
+        'contact/register.html',
+        {
+            'form': form
+        }
+    )
