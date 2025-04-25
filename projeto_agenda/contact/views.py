@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from contact.models import Contact
 from django.db.models import Q
 from django.core.paginator import Paginator
-from contact.forms import ContactForm, RegisterForm
+from contact.forms import ContactForm, RegisterForm, RegisterUpdateForm
 from django.urls import reverse
 from django.contrib import messages, auth
 from django.contrib.auth.forms import AuthenticationForm
@@ -171,6 +171,26 @@ def register(request):
         {
             'form': form
         }
+    )
+
+def user_update(request):
+    form = RegisterUpdateForm(instance=request.user)
+    if request.method == "POST":
+        form = RegisterUpdateForm(data=request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            auth.login(request, request.user)  # New Login
+            messages.success(request, "Atualizado com sucesso.")
+            return redirect("contact:user_update")
+
+    return render(
+        request,
+        "contact/user_update.html",
+        {
+            "site_title": "Update User - ",
+            "form": form,
+        },
     )
 
 def login_view(request):
