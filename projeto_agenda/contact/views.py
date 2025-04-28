@@ -6,6 +6,7 @@ from contact.forms import ContactForm, RegisterForm, RegisterUpdateForm
 from django.urls import reverse
 from django.contrib import messages, auth
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     contacts = Contact.objects.filter(show=True).order_by('-id')
@@ -72,6 +73,7 @@ def search(request):
         context=context
     )
 
+@login_required(login_url='contact:login')
 def create(request):
     form_action = reverse('contact:create')
 
@@ -103,6 +105,7 @@ def create(request):
         context=context
     )
 
+@login_required(login_url='contact:login')
 def update(request, contact_id):
     contact = get_object_or_404(Contact, pk=contact_id, show=True)
     form_action = reverse('contact:update', args=(contact_id,))
@@ -135,6 +138,7 @@ def update(request, contact_id):
         context=context
     )
 
+@login_required(login_url='contact:login')
 def delete(request, contact_id):
      contact = get_object_or_404(
          Contact, pk=contact_id, show=True
@@ -173,6 +177,7 @@ def register(request):
         }
     )
 
+@login_required(login_url='contact:login')
 def user_update(request):
     form = RegisterUpdateForm(instance=request.user)
     if request.method == "POST":
@@ -215,6 +220,7 @@ def login_view(request):
     )
 
 
+@login_required(login_url='contact:login')
 def logout_view(request):
     auth.logout(request)
     return redirect('contact:login')
