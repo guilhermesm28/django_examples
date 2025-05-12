@@ -52,3 +52,5 @@ O comando abaixo gera os arquivos estáticos (css, js, imagens). É necessário 
 `python manage.py collectstatic`.
 
 Também no arquivo settings.py, é preciso mudar o argumento DEBUG para False e definir os hosts permitidos no argumento ALLOWED_HOSTS.
+
+Comando para gerar o SECRET_KEY: `python -c "import string as s;from secrets import SystemRandom as SR;print(''.join(SR().choices(s.ascii_letters + s.digits + s.punctuation, k=64)));"`
